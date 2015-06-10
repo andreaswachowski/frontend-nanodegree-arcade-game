@@ -18,11 +18,11 @@ Enemy.prototype.setSpeed = function() {
 
 Enemy.prototype.moveToStart = function() {
     this.x = -100;
-    this.y = getRandomInt(1,4)*Tile.height;
+    this.y = this.aRandomStoneRow();
 };
 
-Enemy.prototype.placeOnRandomStoneRow = function() {
-    this.y = getRandomInt(1,4)*Tile.height;
+Enemy.prototype.aRandomStoneRow = function() {
+    return getRandomInt(1,4)*Tile.height-20;
 };
 
 // Update the enemy's position, required method for game
