@@ -7,7 +7,11 @@
 </head>
 <body>
     <script src="js/resources.js"></script>
-    <script src="js/app.js"></script>
+    <!-- engine.js must appear before app.js because it contains some
+      global properties used in app.js -->
     <script src="js/engine.js"></script>
+    <!-- app.js is a concatenation of everything in js/app, created via
+      "grunt concat" -->
+    <script src="js/app.js"></script>
 </body>
 </html>
