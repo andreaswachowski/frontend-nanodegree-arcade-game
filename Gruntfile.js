@@ -9,6 +9,11 @@ module.exports = function(grunt) {
     concat: {
       dist: {
         src: ['js/app/*.js'],
+        // TODO: The target should not be in the js directory
+        // Better setup a completely separate "dist" directory
+        // and copy all HTML, CSS, JS into there.
+        // Afterwards, don't forget to remove js/app.js from the .gitignore
+        // file!
         dest: 'js/app.js'
       }
     }
