@@ -16,7 +16,7 @@ Player.prototype.update = function(dt) {
 // TODO: Make the numRows and numCols from Engine.render() available
 // to allow dynamic positioning when the game size changes.
 Player.prototype.render = function(dt) {
-    ctx.drawImage(Resources.get(this.sprite), this.col * Engine.tileWidth, this.row * Engine.tileHeight);
+    ctx.drawImage(Resources.get(this.sprite), this.col * Tile.Width, this.row * Tile.height);
 };
 
 Player.prototype.moveToStart = function() {
