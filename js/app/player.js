@@ -9,13 +9,15 @@ var Player = function() {
 // to allow dynamic positioning when the game size changes.
     this.moveToStart();
     this.won = false;
+    this.collided = false;
 };
 
 // The player can pause/resume the game with a hit on the space key
 Player.pause = false;
 
 Player.prototype.update = function(dt) {
-    if (this.collidedWithEnemy()) {
+    this.collided = this.collidedWithEnemy();
+    if (this.collided) {
         this.moveToStart();
     }
 };
@@ -46,6 +48,13 @@ Player.prototype.moveToStart = function() {
 };
 
 Player.prototype.handleInput = function(keyCode) {
+    if (typeof score.timeoutID == "number") {
+        score.show = false;
+        Player.pause = false;
+        // console.log("timeout found " + score.timeoutID);
+        window.clearTimeout(score.timeoutID);
+        delete score.timeoutID;
+    }
     switch (keyCode) {
         case 'left':
             Player.pause = false;
