@@ -50,11 +50,11 @@ Player.prototype.moveToStart = function() {
 };
 
 Player.prototype.handleInput = function(keyCode) {
-    if (keyCode != 'space' && keyCode != '?') {
+    if (keyCode !== undefined && keyCode != 'space' && keyCode != '?') {
         Player.pause = false;
     }
 
-    if (keyCode != '?') {
+    if (keyCode !== undefined && keyCode != '?') {
         helpScreen.hide();
     }
 
@@ -100,23 +100,26 @@ Player.prototype.handleInput = function(keyCode) {
             Player.pause = !Player.pause;
             break;
 
-        default: /* '?' */
+        case '?':
             Player.pause = true;
             helpScreen.show();
             break;
+
+        default: // Nothing to do in other cases
     }
 };
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
+    console.log(e.keyCode);
     var allowedKeys = {
         37: 'left',
         38: 'up',
         39: 'right',
         40: 'down',
         32: 'space',
-        63: '?'
+        191: '?'
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
