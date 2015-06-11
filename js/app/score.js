@@ -1,6 +1,7 @@
 var Score = function() {
-  this.score = 0;
-  this.show = false;
+  this.score = 0; // total score in the game
+  this.delta = 0; // change in score when winning/losing
+  this.show = false; // true when the score shall be displayed
 };
 
 Score.prototype.update = function() {
@@ -18,7 +19,10 @@ Score.prototype.update = function() {
 Score.prototype.render = function() {
   if (this.show) {
     Player.pause = true;
-    writeLine(ctx,this.score,ctx.canvas.height/2);
+    var fillStyle = (this.delta < 0) ? "red" : "lightgreen";
+    var deltaPrefix = (this.delta < 0) ? "" : "+";
+    writeLine(ctx,deltaPrefix+this.delta,ctx.canvas.height/2-60, 36, fillStyle);
+    writeLine(ctx,this.score,ctx.canvas.height/2, 48);
     // TODO: Can I somehow reuse this functionality
     var hide = function(score) {
       return function() {
@@ -28,7 +32,7 @@ Score.prototype.render = function() {
       };
     };
     if (this.timeoutID === undefined) {
-      this.timeoutID = setTimeout(hide(this),2000);
+      this.timeoutID = setTimeout(hide(this),750);
       // console.log("timeout set: " + this.timeoutID);
     }
   }
@@ -39,11 +43,6 @@ Score.prototype.resetShowScore = function() {
 };
 
 Score.prototype.timeBonus = function() {
-  // In general: The faster, the more points. 
-  // But being really fast brings really a lot of points,
-  // the bonus wears out the longer one takes.
-  // > 6 seconds: 0
-  // > 6 seconds: 0
   var bonus=0;
   switch (Math.round(player.winningTime)) {
     case 0: bonus = 50; break;
@@ -57,12 +56,14 @@ Score.prototype.timeBonus = function() {
 };
 
 Score.prototype.increaseForGameWon = function() {
-  this.score += 10 + this.timeBonus();
+  this.delta = 10 + this.timeBonus();
+  this.score += this.delta;
 };
 
 Score.prototype.decreaseBecauseOfCollision = function() {
+  this.delta = -30;
   if (this.score>=30) {
-    this.score -= 30;
+    this.score += this.delta;
   } else {
     this.score = 0;
   }

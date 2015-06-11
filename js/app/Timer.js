@@ -13,7 +13,7 @@ Timer.prototype.update = function(dt) {
 };
 
 Timer.prototype.render = function() {
-  ctx.font = "14pt Impact";
+  ctx.font = "20pt Impact";
   ctx.textAlign = "right";
 
   ctx.fillStyle = "white";

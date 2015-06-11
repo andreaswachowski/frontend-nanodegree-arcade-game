@@ -50,8 +50,12 @@ Player.prototype.moveToStart = function() {
 };
 
 Player.prototype.handleInput = function(keyCode) {
-    if (keyCode != 'space') {
+    if (keyCode != 'space' && keyCode != '?') {
         Player.pause = false;
+    }
+
+    if (keyCode != '?') {
+        helpScreen.hide();
     }
 
     // When the user presses a key while a score is shown
@@ -92,8 +96,14 @@ Player.prototype.handleInput = function(keyCode) {
             }
             break;
 
-        default: /* 'space' */
+        case 'space':
             Player.pause = !Player.pause;
+            break;
+
+        default: /* '?' */
+            Player.pause = true;
+            helpScreen.show();
+            break;
     }
 };
 
@@ -105,10 +115,12 @@ document.addEventListener('keyup', function(e) {
         38: 'up',
         39: 'right',
         40: 'down',
-        32:'space'
+        32: 'space',
+        63: '?'
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
 var player = new Player();
+

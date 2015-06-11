@@ -97,6 +97,7 @@ var Engine = (function(global) {
         timer.update(dt);
         score.update();
         player.update();
+        helpScreen.update();
     }
 
     /* This function initially draws the "game level", it will then call
@@ -157,6 +158,7 @@ var Engine = (function(global) {
         timer.render();
         score.render();
         player.render();
+        helpScreen.render();
     }
 
     /* This function does nothing but it could have been a good place to

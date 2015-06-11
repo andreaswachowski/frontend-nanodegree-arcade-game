@@ -6,11 +6,14 @@ function getRandomInt(min, max) {
       return Math.floor(Math.random() * (max - min)) + min;
 }
 
-function writeLine(ctx,text,y) {
-  ctx.font = "36pt Impact";
+function writeLine(ctx,text,y, textSize, fillStyle) {
+  ctx.font = textSize.toString() + "pt Impact";
   ctx.textAlign = "center";
 
-  ctx.fillStyle = "white";
+  if (fillStyle === undefined) {
+      fillStyle = "white";
+  }
+  ctx.fillStyle = fillStyle;
   ctx.strokeStyle = "black";
   ctx.lineWidth = 3;
 
