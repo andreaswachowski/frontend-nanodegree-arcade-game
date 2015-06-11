@@ -10,6 +10,7 @@ var Player = function() {
     this.moveToStart();
     this.won = false;
     this.collided = false;
+    this.winningTime = 0;
 };
 
 // The player can pause/resume the game with a hit on the space key
@@ -45,44 +46,47 @@ Player.prototype.collidedWithEnemy = function() {
 Player.prototype.moveToStart = function() {
     this.row = 5; // rows range from 0 (top) to 5 (bottom)
     this.col = 2; // cols range from 0 (left) to 4 (right)
+    timer.reset();
 };
 
 Player.prototype.handleInput = function(keyCode) {
+    if (keyCode != 'space') {
+        Player.pause = false;
+    }
+
+    // When the user presses a key while a score is shown
+    // the score's timeout has to be cleared
     if (typeof score.timeoutID == "number") {
         score.show = false;
-        Player.pause = false;
-        // console.log("timeout found " + score.timeoutID);
         window.clearTimeout(score.timeoutID);
         delete score.timeoutID;
     }
+
     switch (keyCode) {
         case 'left':
-            Player.pause = false;
             if (this.col > 0) {
                 this.col--;
             }
             break;
 
         case 'up':
-            Player.pause = false;
             if (this.row > 0) {
                 this.row--;
             }
             if (this.row === 0) { // goal reached, game won
+                this.winningTime = timer.duration;
                 this.won = true;
                 this.moveToStart();
             }
             break;
 
         case 'right':
-            Player.pause = false;
             if (this.col < 4) { 
                 this.col++; 
             }          
             break;
 
         case 'down':
-            Player.pause = false;
             if (this.row < 5) {
                 this.row++;
             }
@@ -106,3 +110,5 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+var player = new Player();
