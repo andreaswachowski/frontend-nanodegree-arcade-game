@@ -17,10 +17,13 @@ module.exports = function(grunt) {
         dest: 'js/app.js'
       }
     },
+    jshint: {
+      all: ['Gruntfile.js', 'js/engine.js', 'js/resources.js', 'js/app/*.js' ]
+    },
     watch: {
       js: {
           files: ['js/**/*.js'],
-          tasks: ['concat'],
+          tasks: ['concat','jshint'],
           options: {
                 spawn: false,
               },
@@ -28,5 +31,5 @@ module.exports = function(grunt) {
     },
   });
 
-  grunt.registerTask('default', ['concat','watch']);
+  grunt.registerTask('default', ['concat', 'watch']);
 };
