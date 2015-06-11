@@ -4,4 +4,4 @@ function Tile() {
 }
 
 Tile.height = 83;
-Tile.Width = 101;
+Tile.width = 101;

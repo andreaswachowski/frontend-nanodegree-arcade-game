@@ -11,12 +11,28 @@ var Player = function() {
 };
 
 Player.prototype.update = function(dt) {
+    if (this.collidedWithEnemy()) {
+        this.moveToStart();
+    }
 };
 
 // TODO: Make the numRows and numCols from Engine.render() available
 // to allow dynamic positioning when the game size changes.
 Player.prototype.render = function(dt) {
-    ctx.drawImage(Resources.get(this.sprite), this.col * Tile.Width, this.row * Tile.height);
+    ctx.drawImage(Resources.get(this.sprite), this.col * Tile.width, this.row * Tile.height);
+};
+
+Player.prototype.collidedWithEnemy = function() {
+    var collided = false;
+    for (var idx in allEnemies) {
+        var enemy=allEnemies[idx];
+        if ((Math.round(enemy.x/Tile.width) === this.col) && 
+            (Math.round(enemy.y/Tile.height) === this.row)) {
+            collided = true;
+            break;
+        }
+    }
+    return collided;
 };
 
 Player.prototype.moveToStart = function() {
