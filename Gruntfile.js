@@ -16,6 +16,17 @@ module.exports = function(grunt) {
         // file!
         dest: 'js/app.js'
       }
-    }
+    },
+    watch: {
+      js: {
+          files: ['js/**/*.js'],
+          tasks: ['concat'],
+          options: {
+                spawn: false,
+              },
+        },
+    },
   });
+
+  grunt.registerTask('default', ['concat','watch']);
 };
