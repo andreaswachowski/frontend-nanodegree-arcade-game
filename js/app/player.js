@@ -10,6 +10,9 @@ var Player = function() {
     this.moveToStart();
 };
 
+// The player can pause/resume the game with a hit on the space key
+Player.pause = false;
+
 Player.prototype.update = function(dt) {
     if (this.collidedWithEnemy()) {
         this.moveToStart();
@@ -44,12 +47,14 @@ Player.prototype.moveToStart = function() {
 Player.prototype.handleInput = function(keyCode) {
     switch (keyCode) {
         case 'left':
+            Player.pause = false;
             if (this.col > 0) {
                 this.col--;
             }
             break;
 
         case 'up':
+            Player.pause = false;
             if (this.row > 0) {
                 this.row--;
             }
@@ -60,16 +65,21 @@ Player.prototype.handleInput = function(keyCode) {
             break;
 
         case 'right':
+            Player.pause = false;
             if (this.col < 4) { 
                 this.col++; 
             }          
             break;
 
-        default: /* 'down' */
+        case 'down':
+            Player.pause = false;
             if (this.row < 5) {
                 this.row++;
             }
             break;
+
+        default: /* 'space' */
+            Player.pause = !Player.pause;
     }
 };
 
@@ -80,7 +90,8 @@ document.addEventListener('keyup', function(e) {
         37: 'left',
         38: 'up',
         39: 'right',
-        40: 'down'
+        40: 'down',
+        32:'space'
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
