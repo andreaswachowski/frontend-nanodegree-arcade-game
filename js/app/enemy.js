@@ -12,17 +12,22 @@ var Enemy = function() {
     this.moveToStart();
 };
 
+// An enemy's speed is constant, but different enemys can have different
+// speeds.
 Enemy.prototype.setSpeed = function() {
     this.speed = 100+getRandomInt(0,200);
 };
 
 Enemy.prototype.moveToStart = function() {
+    // We are moving the enemy a bit behind its starting line to have a
+    // short delay between it disappearing and reappearing
+    // Hence (the otherwise arbitrary value) -100 instead of 0
     this.x = -100;
     this.y = this.aRandomStoneRow();
 };
 
 Enemy.prototype.aRandomStoneRow = function() {
-    return getRandomInt(1,4)*Tile.height-20;
+    return getRandomInt(1,4)*Tile.height-20; // -20 to center the enemys on the row
 };
 
 // Update the enemy's position, required method for game
