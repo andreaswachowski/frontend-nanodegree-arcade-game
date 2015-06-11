@@ -24,8 +24,9 @@ Player.prototype.render = function(dt) {
 
 Player.prototype.collidedWithEnemy = function() {
     var collided = false;
-    for (var idx in allEnemies) {
-        var enemy=allEnemies[idx];
+    var numEnemies = allEnemies.length;
+    for (var i=0; i<numEnemies; i++) {
+        var enemy=allEnemies[i];
         if ((Math.round(enemy.x/Tile.width) === this.col) && 
             (Math.round(enemy.y/Tile.height) === this.row)) {
             collided = true;
