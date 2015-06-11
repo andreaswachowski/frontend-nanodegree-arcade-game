@@ -8,6 +8,7 @@ var Player = function() {
 // TODO: Make the numRows and numCols from Engine.render() available
 // to allow dynamic positioning when the game size changes.
     this.moveToStart();
+    this.won = false;
 };
 
 // The player can pause/resume the game with a hit on the space key
@@ -59,7 +60,7 @@ Player.prototype.handleInput = function(keyCode) {
                 this.row--;
             }
             if (this.row === 0) { // goal reached, game won
-                // TODO: Increase score, Display winning message
+                this.won = true;
                 this.moveToStart();
             }
             break;

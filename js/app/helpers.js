@@ -5,3 +5,16 @@
 function getRandomInt(min, max) {
       return Math.floor(Math.random() * (max - min)) + min;
 }
+
+function writeLine(ctx,text,y) {
+  ctx.font = "36pt Impact";
+  ctx.textAlign = "center";
+
+  ctx.fillStyle = "white";
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 3;
+
+  ctx.fillText(text, ctx.canvas.width/2, y);
+  ctx.strokeText(text, ctx.canvas.width/2, y);
+}
+
