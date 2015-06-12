@@ -1,6 +1,13 @@
 frontend-nanodegree-arcade-game
 ===============================
 
+This is a simple frogger-like game:
+
+![sample screenshot](/screenshot.png "An impression of the game")
+
+Installation
+------------
+
 Use grunt to concatenate the javascripts in js/app/* into js/app.js, then load index.html.
 
 When the game starts, you can press '?' for a help screen.
