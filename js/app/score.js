@@ -18,7 +18,6 @@ Score.prototype.update = function() {
 
 Score.prototype.render = function() {
   if (this.show) {
-    Player.pause = true;
     var fillStyle = (this.delta < 0) ? "red" : "lightgreen";
     var deltaPrefix = (this.delta < 0) ? "" : "+";
     writeLine(ctx,deltaPrefix+this.delta,ctx.canvas.height/2-60, 36, fillStyle);
@@ -27,7 +26,6 @@ Score.prototype.render = function() {
     var hide = function(score) {
       return function() {
         score.show = false;
-        Player.pause = false;
         delete score.timeoutID;
       };
     };
@@ -39,7 +37,6 @@ Score.prototype.render = function() {
 };
 
 Score.prototype.resetShowScore = function() {
-  Player.pause = false;
 };
 
 Score.prototype.timeBonus = function() {

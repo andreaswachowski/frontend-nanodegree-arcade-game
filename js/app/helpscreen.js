@@ -6,7 +6,7 @@ var HelpScreen = function() {
     'space: pause game',
     '? display help',
     '',
-    'Press space to continue.'
+    'Press any key to continue.'
   ];
 
   this.showScreen = false;
@@ -38,6 +38,7 @@ HelpScreen.prototype.render = function() {
       ctx.fillText(this.help[line], 20, 180+line*lineHeight);
       ctx.strokeText(this.help[line], 20, 180+line*lineHeight);
     }
+    engine.togglePaused();
   }
 };
 

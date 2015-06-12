@@ -27,7 +27,7 @@ Enemy.prototype.moveToStart = function() {
 };
 
 Enemy.prototype.aRandomStoneRow = function() {
-    return getRandomInt(1,4)*Tile.height-20; // -20 to center the enemys on the row
+    return getRandomInt(1,4)*Tile.height-20; // -20 to center the enemys on the line
 };
 
 // Update the enemy's position, required method for game
@@ -36,11 +36,9 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    if (!Player.pause) {
-        this.x = this.x+this.speed*dt;
-        if (this.x > ctx.canvas.width) {
-            this.moveToStart();
-        }
+    this.x = this.x+this.speed*dt;
+    if (this.x > ctx.canvas.width) {
+        this.moveToStart();
     }
 };
 

@@ -13,9 +13,6 @@ var Player = function() {
     this.winningTime = 0;
 };
 
-// The player can pause/resume the game with a hit on the space key
-Player.pause = false;
-
 Player.prototype.update = function(dt) {
     this.collided = this.collidedWithEnemy();
     if (this.collided) {
@@ -50,12 +47,23 @@ Player.prototype.moveToStart = function() {
 };
 
 Player.prototype.handleInput = function(keyCode) {
-    if (keyCode !== undefined && keyCode != 'space' && keyCode != '?') {
-        Player.pause = false;
-    }
+    // keyCode !== undefined means one of the allowed keys was pressed.
+    // TODO: Refactor: Turn this comment into, say, a function
+    // "allowedKeyPressed(keyCode)" returning a boolean
+    if (engine.paused && keyCode !== undefined) {
+        if (helpScreen.show) helpScreen.hide();
+        engine.togglePaused();
 
-    if (keyCode !== undefined && keyCode != '?') {
-        helpScreen.hide();
+        // Pressing the 'space' key when seeing the help screen shall
+        // resume the game. If we don't return here, the game will be
+        // paused again as soon as the switch-statement below is reached.
+        if (keyCode === 'space') return;
+
+        // Same reasoning - when '?' is pressed to resume the game,
+        // we must return here, or else we resume for a split-second
+        // before pausing again and showing the help screen once the switch
+        // below is reached.
+        if (keyCode === '?') return;
     }
 
     // When the user presses a key while a score is shown
@@ -97,11 +105,10 @@ Player.prototype.handleInput = function(keyCode) {
             break;
 
         case 'space':
-            Player.pause = !Player.pause;
+            engine.togglePaused();
             break;
 
         case '?':
-            Player.pause = true;
             helpScreen.show();
             break;
 
@@ -112,7 +119,6 @@ Player.prototype.handleInput = function(keyCode) {
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
-    console.log(e.keyCode);
     var allowedKeys = {
         37: 'left',
         38: 'up',

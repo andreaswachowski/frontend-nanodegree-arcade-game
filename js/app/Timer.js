@@ -7,9 +7,7 @@ Timer.prototype.reset = function() {
 };
 
 Timer.prototype.update = function(dt) {
-  if (!Player.pause) {
-      this.duration += dt;
-  }
+    this.duration += dt;
 };
 
 Timer.prototype.render = function() {
