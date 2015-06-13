@@ -5,7 +5,7 @@ About
 -----
 This is a simple browser-based game, similar to [frogger](https://en.wikipedia.org/wiki/Frogger).
 
-![sample screenshot](/screenshot.png "An impression of the game")
+<img src="https://github.com/andreaswachowski/frontend-nanodegree-arcade-game/blob/master/screenshot.png" height="auto" width="400" >
 
 The character at the bottom is the player. The goal is to cross the screen to the top without getting hit by any of the bugs crossing the stones from left to right, at various speeds.
 
