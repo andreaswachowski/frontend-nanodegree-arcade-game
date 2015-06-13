@@ -31,7 +31,7 @@ Player.prototype.collidedWithEnemy = function() {
     var numEnemies = allEnemies.length;
     for (var i=0; i<numEnemies; i++) {
         var enemy=allEnemies[i];
-        if ((Math.round(enemy.x/Tile.width) === this.col) && 
+        if ((Math.round(enemy.x/Tile.width) === this.col) &&
             (Math.round(enemy.y/Tile.height) === this.row)) {
             collided = true;
             break;
@@ -93,9 +93,9 @@ Player.prototype.handleInput = function(keyCode) {
             break;
 
         case 'right':
-            if (this.col < 4) { 
-                this.col++; 
-            }          
+            if (this.col < 4) {
+                this.col++;
+            }
             break;
 
         case 'down':
