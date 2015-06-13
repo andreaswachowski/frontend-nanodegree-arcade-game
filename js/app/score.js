@@ -36,9 +36,6 @@ Score.prototype.render = function() {
   }
 };
 
-Score.prototype.resetShowScore = function() {
-};
-
 Score.prototype.timeBonus = function() {
   var bonus=0;
   switch (Math.round(player.winningTime)) {
