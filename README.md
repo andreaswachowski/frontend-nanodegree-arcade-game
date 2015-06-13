@@ -1,19 +1,40 @@
 frontend-nanodegree-arcade-game
 ===============================
 
-This is a simple frogger-like game:
+About
+-----
+This is a simple browser-based game, similar to [frogger](https://en.wikipedia.org/wiki/Frogger).
 
 ![sample screenshot](/screenshot.png "An impression of the game")
 
+The character at the bottom is the player. The goal is to cross the screen to the top without getting hit by any of the bugs crossing the stones from left to right, at various speeds.
+
+A score is awarded once the game is won. At minimum those are 10 points, but there is a time bonus which increases the faster the game is finished.
+
+When the player is hit by an enemy, it returns to the starting position, and 30 points are subtracted from the score. 
+
+Shortcuts:
+* Cursor keys for navigation.
+* Space key to pause and resume
+* '?' to open a help screen
+
 Installation
 ------------
+* Clone the git repository to a local directory
+* The hackish way (on Linux or Mac OS X):
+  1. Change to the project's root directory
+  2. Execute ```cat js/app/* >> js/app.js```
+* The recommended (future-proof) way, using [grunt](http://gruntjs.com/getting-started) (assumes grunt-cli is already installed):
+  1. Change to the project's root directory
+  2. Run ```npm install```
+  3. Run Grunt with ```grunt```
 
-Use grunt to concatenate the javascripts in js/app/* into js/app.js, then load index.html.
+That will create ```js/app.js``` which is required from ```index.html```.
 
-When the game starts, you can press '?' for a help screen.
+Running the game
+----------------
+Simply load ```index.html``` in a browser and have fun!
 
-
-
-Students should use this rubric: https://www.udacity.com/course/viewer#!/c-ud015/l-3072058665/m-3072588797
-
-for self-checking their submission.
+Feedback
+--------
+Feedback is welcome! For feature requests, bug reports, or even refactoring suggestions or general JavaScript tips (I am new to JavaScript), please open an issue on this project in Github. Thanks!
