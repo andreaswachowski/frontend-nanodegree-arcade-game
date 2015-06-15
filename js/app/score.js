@@ -1,23 +1,23 @@
 var Score = function() {
   this.score = 0; // total score in the game
   this.delta = 0; // change in score when winning/losing
-  this.show = false; // true when the score shall be displayed
+  this.isShowing = false;
 };
 
 Score.prototype.update = function() {
   if (engine.state === GameState.WINNING) {
       this.increaseForGameWon();
       engine.state = GameState.PLAYING;
-      this.show = true;
+      this.isShowing = true;
   } else if (engine.state === GameState.LOSING) {
       this.decreaseBecauseOfCollision();
       engine.state = GameState.PLAYING;
-      this.show = true;
+      this.isShowing = true;
   }
 };
 
 Score.prototype.render = function() {
-  if (this.show) {
+  if (this.isShowing) {
     var fillStyle = (this.delta < 0) ? "red" : "lightgreen";
     var deltaPrefix = (this.delta < 0) ? "" : "+";
     writeLine(ctx,deltaPrefix+this.delta,ctx.canvas.height/2-60, 36, fillStyle);
@@ -25,7 +25,7 @@ Score.prototype.render = function() {
     // TODO: Can I somehow reuse this functionality
     var hide = function(score) {
       return function() {
-        score.show = false;
+        score.isShowing = false;
         delete score.timeoutID;
       };
     };

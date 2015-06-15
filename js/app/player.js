@@ -116,7 +116,7 @@ Player.prototype.handleInput = function(keyCode) {
     // When the user presses a key while a score is shown
     // the score's timeout has to be cleared
     if (typeof score.timeoutID == "number") {
-        score.show = false;
+        score.isShowing = false;
         window.clearTimeout(score.timeoutID);
         delete score.timeoutID;
     }
