@@ -1,19 +1,28 @@
 var Score = function() {
   this.score = 0; // total score in the game
   this.delta = 0; // change in score when winning/losing
+
+  // this.isShowing is set to true when the score shall be displayed
+  // This boolean is intentionally *not* an additional GameState,
+  // because it is orthogonal to the PLAYING state, and thus
+  // the PLAYING logic would have to be duplicated for
+  // a SHOWING_SCORE state.
   this.isShowing = false;
 };
 
 Score.prototype.update = function() {
   if (engine.state === GameState.WINNING) {
       this.increaseForGameWon();
-      engine.state = GameState.PLAYING;
-      this.isShowing = true;
+      this.activateDisplay();
   } else if (engine.state === GameState.LOSING) {
       this.decreaseBecauseOfCollision();
-      engine.state = GameState.PLAYING;
-      this.isShowing = true;
+      this.activateDisplay();
   }
+};
+
+Score.prototype.activateDisplay = function() {
+    engine.state = GameState.PLAYING;
+    this.isShowing = true;
 };
 
 Score.prototype.render = function() {
