@@ -21,19 +21,17 @@ Shortcuts:
 Installation
 ------------
 * Clone the git repository to a local directory
-* The hackish way (on Linux or Mac OS X):
-  1. Change to the project's root directory
-  2. Execute ```cat js/app/* >> js/app.js```
-* The recommended (future-proof) way, using [grunt](http://gruntjs.com/getting-started) (assumes grunt-cli is already installed):
+* Call [grunt](http://gruntjs.com/getting-started) (assumes grunt-cli is already installed):
   1. Change to the project's root directory
   2. Run ```npm install```
   3. Run Grunt with ```grunt```
 
-That will create ```js/app.js``` which is required from ```index.html```.
+Afterwards, all relevant files can be found in the ```dist``` directory
+(below the project's root directory).
 
 Running the game
 ----------------
-Simply load ```index.html``` in a browser and have fun!
+Simply load ```dist/index.html``` in a browser and have fun!
 
 Feedback
 --------
