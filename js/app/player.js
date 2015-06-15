@@ -1,20 +1,33 @@
 // vi: ts=4 sw=4 expandtab
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
 var Player = function() {
     this.sprite = 'images/char-boy.png';
-// TODO: Make the numRows and numCols from Engine.render() available
-// to allow dynamic positioning when the game size changes.
     this.moveToStart();
     this.winningTime = 0;
 };
 
 Player.prototype.update = function(dt) {
-    if (this.collidedWithEnemy()) {
-        engine.state = GameState.LOSING;
-        this.moveToStart();
+    switch (engine.state) {
+        case GameState.PLAYING:
+            if (this.collidedWithEnemy()) {
+                engine.state = GameState.LOSING;
+            }
+            break;
+
+        case GameState.LOSING:
+            this.moveToStart();
+            break;
+
+        case GameState.WINNING:
+            this.winningTime = timer.duration;
+            this.moveToStart();
+            break;
+
+        // The PAUSING case will never occur since the game loop
+        // is not executed in that state. I write it out nevertheless
+        // to make explicit that nothing shall be done.
+        case GameState.PAUSING:
+            break;
     }
 };
 
@@ -59,9 +72,7 @@ Player.prototype.handleInput = function(keyCode) {
                     this.row--;
                 }
                 if (this.row === 0) { // goal reached, game won
-                    this.winningTime = timer.duration;
                     engine.state = GameState.WINNING;
-                    this.moveToStart();
                 }
                 break;
 

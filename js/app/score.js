@@ -11,18 +11,21 @@ var Score = function() {
 };
 
 Score.prototype.update = function() {
-    if (engine.state === GameState.WINNING) {
-        this.increaseForGameWon();
-        this.activateDisplay();
-    } else if (engine.state === GameState.LOSING) {
-        this.decreaseBecauseOfCollision();
-        this.activateDisplay();
+    switch (engine.state) {
+        case GameState.WINNING:
+            this.increaseForGameWon();
+            this.activateDisplay();
+            break;
+        case GameState.LOSING:
+            this.decreaseBecauseOfCollision();
+            this.activateDisplay();
+            break;
     }
 };
 
 Score.prototype.activateDisplay = function() {
-    engine.state = GameState.PLAYING;
     this.isShowing = true;
+    engine.state = GameState.PLAYING;
 };
 
 Score.prototype.render = function() {
@@ -31,7 +34,6 @@ Score.prototype.render = function() {
         var deltaPrefix = (this.delta < 0) ? "" : "+";
         writeLine(ctx,deltaPrefix+this.delta,ctx.canvas.height/2-60, 36, fillStyle);
         writeLine(ctx,this.score,ctx.canvas.height/2, 48);
-        // TODO: Can I somehow reuse this functionality
         var hide = function(score) {
             return function() {
                 score.isShowing = false;
@@ -40,7 +42,6 @@ Score.prototype.render = function() {
         };
         if (this.timeoutID === undefined) {
             this.timeoutID = setTimeout(hide(this),750);
-            // console.log("timeout set: " + this.timeoutID);
         }
     }
 };
