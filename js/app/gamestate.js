@@ -4,5 +4,4 @@ var GameState = {
     WINNING: 1,
     LOSING: 2,
     PAUSING: 3,
-    DISPLAYING_HELP: 4
 };

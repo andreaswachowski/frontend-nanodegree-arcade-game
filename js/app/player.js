@@ -45,10 +45,6 @@ Player.prototype.moveToStart = function() {
 };
 
 Player.prototype.handleInput = function(keyCode) {
-    // keyCode !== undefined means one of the allowed keys was pressed.
-    // TODO: Refactor: Turn this comment into, say, a function
-    // "allowedKeyPressed(keyCode)" returning a boolean
-    console.log(engine.state);
     switch (engine.state) {
         case GameState.PLAYING:
             switch (keyCode) {
@@ -97,19 +93,27 @@ Player.prototype.handleInput = function(keyCode) {
         case GameState.LOSING:
             break;
         case GameState.PAUSING:
-            if (keyCode !== undefined) {
-                if (helpScreen.show) helpScreen.hide();
-                engine.togglePaused();
+            // In general, it shall be possible to resume the game with any
+            // key, not only one of the allowedKeys. Therefore
+            // engine.togglePaused() is called almost unconditionally. The
+            // one exception that must be made in this implementation,
+            // where we treat the help screen display as a special pause
+            // mode, is the 'shift' key:
 
-                // Same reasoning - when '?' is pressed to resume the game,
-                // we must return here, or else we resume for a split-second
-                // before pausing again and showing the help screen once the switch
-                // below is reached.
-                if (keyCode === '?')
-                    return;
+            if (helpScreen.isShowing) {
+                if (keyCode != 'shift') {
+                    helpScreen.hide();
+                    engine.togglePaused();
+                }
+                // else don't do anything. Rationale: To type '?', one has
+                // to type 'shift + /'. Afterwards, one releases first '/' and
+                // then 'shift'. This second key release must not trigger
+                // the disappearance of the help screen, otherwise it would
+                // just be displayed for a split-second - or as long as the
+                // user keeps holding down the shift-key.
+            } else {
+                engine.togglePaused();
             }
-            break;
-        case GameState.DISPLAYING_HELP:
             break;
     }
 
@@ -120,7 +124,6 @@ Player.prototype.handleInput = function(keyCode) {
         window.clearTimeout(score.timeoutID);
         delete score.timeoutID;
     }
-
 };
 
 // This listens for key presses and sends the keys to your
@@ -132,7 +135,8 @@ document.addEventListener('keyup', function(e) {
         39: 'right',
         40: 'down',
         32: 'space',
-        191: '?'
+        191: '?',
+        16: 'shift' // needed to explicitly handle '?'
     };
 
     player.handleInput(allowedKeys[e.keyCode]);

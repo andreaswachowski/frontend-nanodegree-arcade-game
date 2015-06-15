@@ -9,15 +9,15 @@ var HelpScreen = function() {
     'Press any key to continue.'
   ];
 
-  this.showScreen = false;
+  this.isShowing = false;
 };
 
 HelpScreen.prototype.show = function() {
-  this.showScreen = true;
+  this.isShowing = true;
 };
 
 HelpScreen.prototype.hide = function() {
-  this.showScreen = false;
+  this.isShowing = false;
 };
 
 HelpScreen.prototype.update = function() {
@@ -25,7 +25,7 @@ HelpScreen.prototype.update = function() {
 
 
 HelpScreen.prototype.render = function() {
-  if (this.showScreen) {
+  if (this.isShowing) {
     ctx.font = "20pt Impact";
     ctx.textAlign = "left";
 
