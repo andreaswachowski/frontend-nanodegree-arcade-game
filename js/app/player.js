@@ -50,20 +50,69 @@ Player.prototype.handleInput = function(keyCode) {
     // keyCode !== undefined means one of the allowed keys was pressed.
     // TODO: Refactor: Turn this comment into, say, a function
     // "allowedKeyPressed(keyCode)" returning a boolean
-    if (engine.paused && keyCode !== undefined) {
-        if (helpScreen.show) helpScreen.hide();
-        engine.togglePaused();
+    console.log(engine.state);
+    switch (engine.state) {
+        case GameState.PLAYING:
+            switch (keyCode) {
+                case 'left':
+                    if (this.col > 0) {
+                    this.col--;
+                }
+                break;
 
-        // Pressing the 'space' key when seeing the help screen shall
-        // resume the game. If we don't return here, the game will be
-        // paused again as soon as the switch-statement below is reached.
-        if (keyCode === 'space') return;
+                case 'up':
+                    if (this.row > 0) {
+                    this.row--;
+                }
+                if (this.row === 0) { // goal reached, game won
+                    this.winningTime = timer.duration;
+                    this.won = true;
+                    this.moveToStart();
+                }
+                break;
 
-        // Same reasoning - when '?' is pressed to resume the game,
-        // we must return here, or else we resume for a split-second
-        // before pausing again and showing the help screen once the switch
-        // below is reached.
-        if (keyCode === '?') return;
+                case 'right':
+                    if (this.col < 4) {
+                    this.col++;
+                }
+                break;
+
+                case 'down':
+                    if (this.row < 5) {
+                    this.row++;
+                }
+                break;
+
+                case 'space':
+                    engine.togglePaused();
+                break;
+
+                case '?':
+                    helpScreen.show();
+                break;
+
+                default: // Nothing to do in other cases
+            }
+            break;
+        case GameState.WINNING:
+            break;
+        case GameState.LOSING:
+            break;
+        case GameState.PAUSING:
+            if (keyCode !== undefined) {
+                if (helpScreen.show) helpScreen.hide();
+                engine.togglePaused();
+
+                // Same reasoning - when '?' is pressed to resume the game,
+                // we must return here, or else we resume for a split-second
+                // before pausing again and showing the help screen once the switch
+                // below is reached.
+                if (keyCode === '?')
+                    return;
+            }
+            break;
+        case GameState.DISPLAYING_HELP:
+            break;
     }
 
     // When the user presses a key while a score is shown
@@ -74,46 +123,6 @@ Player.prototype.handleInput = function(keyCode) {
         delete score.timeoutID;
     }
 
-    switch (keyCode) {
-        case 'left':
-            if (this.col > 0) {
-                this.col--;
-            }
-            break;
-
-        case 'up':
-            if (this.row > 0) {
-                this.row--;
-            }
-            if (this.row === 0) { // goal reached, game won
-                this.winningTime = timer.duration;
-                this.won = true;
-                this.moveToStart();
-            }
-            break;
-
-        case 'right':
-            if (this.col < 4) {
-                this.col++;
-            }
-            break;
-
-        case 'down':
-            if (this.row < 5) {
-                this.row++;
-            }
-            break;
-
-        case 'space':
-            engine.togglePaused();
-            break;
-
-        case '?':
-            helpScreen.show();
-            break;
-
-        default: // Nothing to do in other cases
-    }
 };
 
 // This listens for key presses and sends the keys to your
