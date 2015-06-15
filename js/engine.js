@@ -104,14 +104,6 @@ Engine.prototype.restorePreviousState = function () {
     this.state = this.previousState;
 };
 
-/*
-Engine.prototype.init = function (self) {
-    console.log(self);
-    self.reset();
-    self.lastTime = Date.now();
-    self.main();
-};*/
-
 /* This function does nothing but it could have been a good place to
  * handle game reset states - maybe a new game menu or a game over screen
  * those sorts of things. It's only called once by the init() method.
