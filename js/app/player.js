@@ -8,14 +8,12 @@ var Player = function() {
 // TODO: Make the numRows and numCols from Engine.render() available
 // to allow dynamic positioning when the game size changes.
     this.moveToStart();
-    this.won = false;
-    this.collided = false;
     this.winningTime = 0;
 };
 
 Player.prototype.update = function(dt) {
-    this.collided = this.collidedWithEnemy();
-    if (this.collided) {
+    if (this.collidedWithEnemy()) {
+        engine.state = GameState.LOSING;
         this.moveToStart();
     }
 };
@@ -66,7 +64,7 @@ Player.prototype.handleInput = function(keyCode) {
                 }
                 if (this.row === 0) { // goal reached, game won
                     this.winningTime = timer.duration;
-                    this.won = true;
+                    engine.state = GameState.WINNING;
                     this.moveToStart();
                 }
                 break;

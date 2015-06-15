@@ -5,13 +5,13 @@ var Score = function() {
 };
 
 Score.prototype.update = function() {
-  if (player.won) {
+  if (engine.state === GameState.WINNING) {
       this.increaseForGameWon();
-      player.won = false;
+      engine.state = GameState.PLAYING;
       this.show = true;
-  } else if (player.collided) {
+  } else if (engine.state === GameState.LOSING) {
       this.decreaseBecauseOfCollision();
-      player.collided = false;
+      engine.state = GameState.PLAYING;
       this.show = true;
   }
 };
