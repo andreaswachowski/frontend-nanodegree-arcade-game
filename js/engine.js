@@ -96,6 +96,14 @@ Engine.prototype.init = function () {
     this.main();
 };
 
+Engine.prototype.saveCurrentState = function () {
+    this.previousState = this.state;
+};
+
+Engine.prototype.restorePreviousState = function () {
+    this.state = this.previousState;
+};
+
 /*
 Engine.prototype.init = function (self) {
     console.log(self);
@@ -117,9 +125,9 @@ Engine.prototype.reset = function () {
 Engine.prototype.togglePaused = function() {
     var now = Date.now();
     if (this.state === GameState.PAUSING) {
-        this.state = this.previousState;
+        this.restorePreviousState();
     } else {
-        this.previousState = this.state;
+        this.saveCurrentState();
         this.state = GameState.PAUSING;
     }
 
