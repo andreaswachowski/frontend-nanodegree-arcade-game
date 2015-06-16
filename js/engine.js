@@ -25,7 +25,7 @@ var Engine = function(global) {
         ctx = canvas.getContext('2d');
 
     this.win = global.window;
-    this.state = GameState.PLAYING;
+    this.state = State.playing;
 
     // After pausing, we want to revert back to whichever state we had
     // before pausing.  This might also (more elegantly) be achieved with a
@@ -54,7 +54,7 @@ var Engine = function(global) {
  */
 Engine.prototype.main = function() {
     var self = this;
-    if (this.state === GameState.PAUSING) {
+    if (this.state === State.pausing) {
         setTimeout( function() {
             self.main.call(self, self.time);
         }, this.PAUSE_TIMEOUT);
@@ -116,14 +116,16 @@ Engine.prototype.reset = function () {
 // is taken from David Geary's "Core HTML 5 Canvas", section 9.1.1.1
 Engine.prototype.togglePaused = function() {
     var now = Date.now();
-    if (this.state === GameState.PAUSING) {
+    if (this.state === State.pausing) {
         this.restorePreviousState();
     } else {
         this.saveCurrentState();
-        this.state = GameState.PAUSING;
+        // TODO: is it the engine's state or the player's state I have to set?
+        // Or both?
+        this.state = State.pausing;
     }
 
-    if (this.state === GameState.PAUSING) {
+    if (this.state === State.pausing) {
         this.startedPauseAt = now;
     } else { // Not paused
         this.startTime = this.startTime + now - this.startedPauseAt;

@@ -3,20 +3,20 @@ var Score = function() {
     this.delta = 0; // change in score when winning/losing
 
     // this.isShowing is set to true when the score shall be displayed
-    // This boolean is intentionally *not* an additional GameState,
-    // because it is orthogonal to the PLAYING state, and thus
-    // the PLAYING logic would have to be duplicated for
-    // a SHOWING_SCORE state.
+    // This boolean is intentionally *not* an additional State,
+    // because it is orthogonal to the State.playing state, and thus
+    // the playing logic would have to be duplicated for
+    // a "showing score" state.
     this.isShowing = false;
 };
 
 Score.prototype.update = function() {
     switch (engine.state) {
-        case GameState.WINNING:
+        case State.winning:
             this.increaseForGameWon();
             this.activateDisplay();
             break;
-        case GameState.LOSING:
+        case State.losing:
             this.decreaseBecauseOfCollision();
             this.activateDisplay();
             break;
@@ -25,7 +25,6 @@ Score.prototype.update = function() {
 
 Score.prototype.activateDisplay = function() {
     this.isShowing = true;
-    engine.state = GameState.PLAYING;
 };
 
 Score.prototype.render = function() {

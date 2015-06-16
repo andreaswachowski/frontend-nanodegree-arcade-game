@@ -6,37 +6,6 @@ var Player = function() {
     this.winningTime = 0;
 };
 
-Player.prototype.update = function(dt) {
-    switch (engine.state) {
-        case GameState.PLAYING:
-            if (this.collidedWithEnemy()) {
-                engine.state = GameState.LOSING;
-            }
-            break;
-
-        case GameState.LOSING:
-            this.moveToStart();
-            break;
-
-        case GameState.WINNING:
-            this.winningTime = timer.duration;
-            this.moveToStart();
-            break;
-
-        // The PAUSING case will never occur since the game loop
-        // is not executed in that state. I write it out nevertheless
-        // to make explicit that nothing shall be done.
-        case GameState.PAUSING:
-            break;
-    }
-};
-
-// TODO: Make the numRows and numCols from Engine.render() available
-// to allow dynamic positioning when the game size changes.
-Player.prototype.render = function(dt) {
-    ctx.drawImage(Resources.get(this.sprite), this.col * Tile.width, this.row * Tile.height);
-};
-
 Player.prototype.collidedWithEnemy = function() {
     var collided = false;
     var numEnemies = allEnemies.length;
@@ -51,6 +20,49 @@ Player.prototype.collidedWithEnemy = function() {
     return collided;
 };
 
+Player.prototype.update = function(dt) {
+    var self=this;
+    engine.state.update(self);
+};
+
+Player.prototype.hasReachedGoal = function(dt) {
+    return (this.row === 0);
+};
+
+Player.prototype.move = function(direction) {
+    switch (direction) {
+        case 'up':
+            if (this.row > 0) {
+                this.row--;
+            }
+            break;
+        case 'down':
+            if (player.row < 5) {
+                player.row++;
+            }
+            break;
+        case 'left':
+            if (this.col > 0) {
+                this.col--;
+            }
+            break;
+        case 'right':
+            if (player.col < 4) {
+                player.col++;
+            }
+            break;
+        default:
+            console.log('Warning: Ignoring unknown direction ' + direction + ' in Player.move');
+            break;
+    }
+};
+
+// TODO: Make the numRows and numCols from Engine.render() available
+// to allow dynamic positioning when the game size changes.
+Player.prototype.render = function(dt) {
+    ctx.drawImage(Resources.get(this.sprite), this.col * Tile.width, this.row * Tile.height);
+};
+
 Player.prototype.moveToStart = function() {
     this.row = 5; // rows range from 0 (top) to 5 (bottom)
     this.col = 2; // cols range from 0 (left) to 4 (right)
@@ -58,75 +70,8 @@ Player.prototype.moveToStart = function() {
 };
 
 Player.prototype.handleInput = function(keyCode) {
-    switch (engine.state) {
-        case GameState.PLAYING:
-            switch (keyCode) {
-                case 'left':
-                    if (this.col > 0) {
-                    this.col--;
-                }
-                break;
-
-                case 'up':
-                    if (this.row > 0) {
-                    this.row--;
-                }
-                if (this.row === 0) { // goal reached, game won
-                    engine.state = GameState.WINNING;
-                }
-                break;
-
-                case 'right':
-                    if (this.col < 4) {
-                    this.col++;
-                }
-                break;
-
-                case 'down':
-                    if (this.row < 5) {
-                    this.row++;
-                }
-                break;
-
-                case 'space':
-                    engine.togglePaused();
-                break;
-
-                case '?':
-                    helpScreen.show();
-                break;
-
-                default: // Nothing to do in other cases
-            }
-            break;
-        case GameState.WINNING:
-            break;
-        case GameState.LOSING:
-            break;
-        case GameState.PAUSING:
-            // In general, it shall be possible to resume the game with any
-            // key, not only one of the allowedKeys. Therefore
-            // engine.togglePaused() is called almost unconditionally. The
-            // one exception that must be made in this implementation,
-            // where we treat the help screen display as a special pause
-            // mode, is the 'shift' key:
-
-            if (helpScreen.isShowing) {
-                if (keyCode != 'shift') {
-                    helpScreen.hide();
-                    engine.togglePaused();
-                }
-                // else don't do anything. Rationale: To type '?', one has
-                // to type 'shift + /'. Afterwards, one releases first '/' and
-                // then 'shift'. This second key release must not trigger
-                // the disappearance of the help screen, otherwise it would
-                // just be displayed for a split-second - or as long as the
-                // user keeps holding down the shift-key.
-            } else {
-                engine.togglePaused();
-            }
-            break;
-    }
+    var self = this;
+    engine.state.handleInput(self,keyCode);
 
     // When the user presses a key while a score is shown
     // the score's timeout has to be cleared
