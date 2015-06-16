@@ -58,6 +58,7 @@ WinningState.prototype.handleInput = function(player,keyCode) {
 
 WinningState.prototype.update = function(player) {
     player.winningTime = timer.duration;
+    score.update('winning');
     player.moveToStart();
     engine.state = State.playing;
 };
@@ -71,6 +72,7 @@ CollidingState.prototype.handleInput = function(player,keyCode) {
 };
 
 CollidingState.prototype.update = function(player) {
+    score.update('losing');
     player.moveToStart();
     engine.state = State.playing;
 };

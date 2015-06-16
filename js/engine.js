@@ -200,22 +200,6 @@ Engine.prototype.updateEntities = function(dt) {
         enemy.update(dt);
     });
     timer.update(dt);
-    // TODO: score and player depend on each other in a wrong way:
-    //
-    // On the one hand, score must be updated before player, because, in
-    // case of the player winning/losing, WinningState#update, executed by
-    // Player#update, resets the engine.state to "playing". But
-    // Score#update checks for that winning/losing state and would never
-    // reach such a case.
-    //
-    // On the other hand, this execution order contains a bug, too:
-    // score.update() depends on player.winningTime, but that is not
-    // initialized yet, and
-    // a) the very first score will receive a timeBonus corresponding to
-    //    whatever winningTime is initialized in the players constructor
-    // b) every subsequent round won will receive the timeBonus from the
-    //    *previous* round.
-    score.update();
     player.update();
     helpScreen.update();
 };

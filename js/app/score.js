@@ -13,14 +13,14 @@ var Score = function() {
     this.isShowing = false;
 };
 
-Score.prototype.update = function() {
+Score.prototype.update = function(state) {
     // TODO: Remove the dependency on global variable 'engine':
-    switch (engine.state) {
-        case State.winning:
+    switch (state) {
+        case 'winning':
             this.increaseForGameWon();
             this.activateDisplay();
             break;
-        case State.losing:
+        case 'losing':
             this.decreaseBecauseOfCollision();
             this.activateDisplay();
             break;
