@@ -9,3 +9,5 @@ function Tile() {
 // constructor as this.height and this.width
 Tile.height = 83;
 Tile.width = 101;
+
+module.exports = Tile;

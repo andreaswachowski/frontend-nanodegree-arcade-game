@@ -1,4 +1,6 @@
 // vi: ts=4 sw=4 expandtab
+var Helpers = require('./helpers.js');
+var Tile = require('./tile.js');
 
 // Enemies our player must avoid
 var Enemy = function() {
@@ -15,7 +17,7 @@ var Enemy = function() {
 // An enemy's speed is constant, but different enemys can have different
 // speeds.
 Enemy.prototype.setSpeed = function() {
-    this.speed = 100+getRandomInt(0,200);
+    this.speed = 100+Helpers.getRandomInt(0,200);
 };
 
 Enemy.prototype.moveToStart = function() {
@@ -27,7 +29,7 @@ Enemy.prototype.moveToStart = function() {
 };
 
 Enemy.prototype.aRandomStoneRow = function() {
-    return getRandomInt(1,4)*Tile.height-20; // -20 to center the enemys on the line
+    return Helpers.getRandomInt(1,4)*Tile.height-20; // -20 to center the enemys on the line
 };
 
 // Update the enemy's position, required method for game
@@ -47,4 +49,4 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-var allEnemies = [new Enemy(), new Enemy(), new Enemy() ];
+module.exports = Enemy;

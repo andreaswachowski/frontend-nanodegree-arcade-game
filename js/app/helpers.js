@@ -21,3 +21,5 @@ function writeLine(ctx,text,y, textSize, fillStyle) {
   ctx.strokeText(text, ctx.canvas.width/2, y);
 }
 
+exports.getRandomInt = getRandomInt;
+exports.writeLine = writeLine;

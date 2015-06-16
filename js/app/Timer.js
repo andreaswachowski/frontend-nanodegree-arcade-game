@@ -1,5 +1,5 @@
 var Timer = function() {
-  this.duration = 0;
+    this.duration = 0;
 };
 
 Timer.prototype.reset = function() {
@@ -23,4 +23,4 @@ Timer.prototype.render = function() {
   ctx.strokeText(text, ctx.canvas.width-20, 80);
 };
 
-var timer = new Timer();
+module.exports = Timer;

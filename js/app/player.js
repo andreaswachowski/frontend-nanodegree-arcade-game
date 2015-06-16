@@ -1,9 +1,11 @@
 // vi: ts=4 sw=4 expandtab
 
+var Tile = require('./tile.js');
+
 var Player = function() {
     this.sprite = 'images/char-boy.png';
     this.moveToStart();
-    this.winningTime = 0;
+    this.winningTime = undefined;
 };
 
 Player.prototype.collidedWithEnemy = function() {
@@ -37,8 +39,8 @@ Player.prototype.move = function(direction) {
             }
             break;
         case 'down':
-            if (player.row < 5) {
-                player.row++;
+            if (this.row < 5) {
+                this.row++;
             }
             break;
         case 'left':
@@ -47,8 +49,8 @@ Player.prototype.move = function(direction) {
             }
             break;
         case 'right':
-            if (player.col < 4) {
-                player.col++;
+            if (this.col < 4) {
+                this.col++;
             }
             break;
         default:
@@ -82,21 +84,4 @@ Player.prototype.handleInput = function(keyCode) {
     }
 };
 
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keyup', function(e) {
-    var allowedKeys = {
-        37: 'left',
-        38: 'up',
-        39: 'right',
-        40: 'down',
-        32: 'space',
-        191: '?',
-        16: 'shift' // needed to explicitly handle '?'
-    };
-
-    player.handleInput(allowedKeys[e.keyCode]);
-});
-
-var player = new Player();
-
+module.exports = Player;

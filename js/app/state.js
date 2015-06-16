@@ -1,6 +1,11 @@
 // For the state pattern, I drew a lot from
 // http://gameprogrammingpatterns.com/state.html
 
+// TODO: It would be much nicer if each state is in a separate file, and
+// adding states would be possible by just adding an additional file,
+// without having to touch state.js
+// I ran into problems by doing so,probably due to circular references. I
+// suppose I need to somehow register new states to make this work.
 var State = function() {
 };
 
@@ -109,3 +114,5 @@ State.playing = new PlayingState();
 State.pausing = new PausingState();
 State.winning = new WinningState();
 State.losing = new CollidingState();
+
+module.exports = State;

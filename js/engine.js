@@ -15,6 +15,49 @@
  * a little simpler to work with.
  */
 
+require('./resources.js');
+var HelpScreen = require('./app/helpscreen.js');
+var State = require('./app/state.js');
+var Enemy = require('./app/enemy.js');
+var Timer = require('./app/timer.js');
+
+var Score = require('./app/score.js');
+var Player = require('./app/player.js');
+
+// TODO: Declaring all those variables globally is a leftover from
+// refactoring to using modules. In a future step, the modules should be
+// decoupled by passing needed variables as parameters (thereby also
+// increasing testability), in order to minimize the use of global
+// variables scattered across modules.
+(function(global) {
+    global.helpScreen = new HelpScreen();
+    global.score = new Score();
+    global.timer = new Timer();
+    global.player = new Player();
+    global.allEnemies = [new Enemy(), new Enemy(), new Enemy() ];
+
+    // This listens for key presses and sends the keys to your
+    // Player.handleInput() method. You don't need to modify this.
+    //
+    // Moved the event listener from player.js to engine.js because it
+    // needs to access the player instance which is defined here.
+    var self = this;
+    document.addEventListener('keyup', function(e) {
+        var allowedKeys = {
+            37: 'left',
+            38: 'up',
+            39: 'right',
+            40: 'down',
+            32: 'space',
+            191: '?',
+            16: 'shift' // needed to explicitly handle '?'
+        };
+
+        self.player.handleInput(allowedKeys[e.keyCode]);
+    });
+
+})(global);
+
 var Engine = function(global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
@@ -120,8 +163,6 @@ Engine.prototype.togglePaused = function() {
         this.restorePreviousState();
     } else {
         this.saveCurrentState();
-        // TODO: is it the engine's state or the player's state I have to set?
-        // Or both?
         this.state = State.pausing;
     }
 
@@ -159,6 +200,21 @@ Engine.prototype.updateEntities = function(dt) {
         enemy.update(dt);
     });
     timer.update(dt);
+    // TODO: score and player depend on each other in a wrong way:
+    //
+    // On the one hand, score must be updated before player, because, in
+    // case of the player winning/losing, WinningState#update, executed by
+    // Player#update, resets the engine.state to "playing". But
+    // Score#update checks for that winning/losing state and would never
+    // reach such a case.
+    //
+    // On the other hand, this execution order contains a bug, too:
+    // score.update() depends on player.winningTime, but that is not
+    // initialized yet, and
+    // a) the very first score will receive a timeBonus corresponding to
+    //    whatever winningTime is initialized in the players constructor
+    // b) every subsequent round won will receive the timeBonus from the
+    //    *previous* round.
     score.update();
     player.update();
     helpScreen.update();
@@ -225,7 +281,19 @@ Engine.prototype.renderEntities = function() {
     helpScreen.render();
 };
 
-var engine = new Engine(this);
+
+// TODO: Same as above for score, timer, etc. The engine variable is global
+// and used across different modules. This should be decoupled.
+(function(global) {
+    // Use browserify's 'global' to pass in the window object
+    // (using "this" here wouldn't work)
+    // Note this is a different scope than the parameter named 'global'
+    // in Engine's constructor. Specifically, that parameter will be assigned
+    // the value of the global in the line below, which in turn was previously
+    // assigned by browserify to "window".
+    var engine = new Engine(global);
+    global.engine = engine;
+})(global);
 
 (function() {
     /* Go ahead and load all of the images we know we're going to need to
@@ -242,3 +310,5 @@ var engine = new Engine(this);
     Resources.onReady(engine.init.bind(engine));
     // Resources.onReady(function() { engine.init(engine); } );
 })();
+
+module.exports = engine;

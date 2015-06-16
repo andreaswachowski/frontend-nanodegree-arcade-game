@@ -1,3 +1,6 @@
+var State = require('./state.js');
+var helpers = require('./helpers.js');
+
 var Score = function() {
     this.score = 0; // total score in the game
     this.delta = 0; // change in score when winning/losing
@@ -11,6 +14,7 @@ var Score = function() {
 };
 
 Score.prototype.update = function() {
+    // TODO: Remove the dependency on global variable 'engine':
     switch (engine.state) {
         case State.winning:
             this.increaseForGameWon();
@@ -31,8 +35,8 @@ Score.prototype.render = function() {
     if (this.isShowing) {
         var fillStyle = (this.delta < 0) ? "red" : "lightgreen";
         var deltaPrefix = (this.delta < 0) ? "" : "+";
-        writeLine(ctx,deltaPrefix+this.delta,ctx.canvas.height/2-60, 36, fillStyle);
-        writeLine(ctx,this.score,ctx.canvas.height/2, 48);
+        helpers.writeLine(ctx,deltaPrefix+this.delta,ctx.canvas.height/2-60, 36, fillStyle);
+        helpers.writeLine(ctx,this.score,ctx.canvas.height/2, 48);
         var hide = function(score) {
             return function() {
                 score.isShowing = false;
@@ -47,6 +51,7 @@ Score.prototype.render = function() {
 
 Score.prototype.timeBonus = function() {
     var bonus=0;
+    // TODO: Make this method independent of global variable player
     switch (Math.round(player.winningTime)) {
         case 0: bonus = 50; break;
         case 1: bonus = 30; break;
@@ -72,4 +77,4 @@ Score.prototype.decreaseBecauseOfCollision = function() {
     }
 };
 
-var score = new Score();
+module.exports = Score;

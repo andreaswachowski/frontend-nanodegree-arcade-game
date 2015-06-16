@@ -25,16 +25,21 @@ module.exports = function(grunt) {
             files: [
                 { expand: true, src: [ 'css/*'], dest: '<%= config.dist %>/' },
                 { expand: true, src: [ 'images/*'], dest: '<%= config.dist %>/' },
-                { expand: true, src: [ 'js/engine.js', 'js/resources.js' ], dest: '<%= config.dist %>/' },
                 {  src: [ 'index.html' ], dest: '<%= config.dist %>/' }
             ]
         }
     },
-    concat: {
-      dist: {
-        src: ['js/app/*.js'],
-        dest: '<%= config.dist %>/js/app.js'
-      }
+
+    browserify: {
+        dist: {
+            files: {
+                '<%= config.dist %>/js/main.js': [ 'js/engine.js' ],
+            },
+            options: {
+                browserifyOptions: {
+                }
+            }
+        }
     },
 
     clean: {
@@ -64,6 +69,6 @@ module.exports = function(grunt) {
     },
   });
 
-  grunt.registerTask('build', ['copy', 'concat']);
+  grunt.registerTask('build', ['copy', 'browserify']);
   grunt.registerTask('default', ['build']);
 };

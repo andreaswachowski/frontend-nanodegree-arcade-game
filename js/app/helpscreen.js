@@ -42,4 +42,4 @@ HelpScreen.prototype.render = function() {
   }
 };
 
-var helpScreen = new HelpScreen();
+module.exports = HelpScreen;
